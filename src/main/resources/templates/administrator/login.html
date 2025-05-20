@@ -49,9 +49,13 @@
               <fieldset>
                 <legend>ログイン</legend>
                 <div class="form-group">
-                  <div class="alert alert-danger">
-                    <p>メールアドレスまたはパスワードが間違っています</p>
-                  </div>
+                  <span th:if="${errorMsg}">
+                    <div class="alert alert-danger">
+                      <p th:text="${errorMsg}">
+                        メールアドレスまたはパスワードが間違っています
+                      </p>
+                    </div>
+                  </span>
                 </div>
                 <div class="form-group">
                   <label for="mailAddress">メールアドレス:</label>

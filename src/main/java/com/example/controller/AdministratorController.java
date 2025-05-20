@@ -28,7 +28,7 @@ public class AdministratorController {
      *
      * @param form リクエストパラメータを格納
      * @return ログイン画面へ遷移させます
-     * */
+     */
     @GetMapping("/")
     public String toLogin(LoginForm form) {
         return "administrator/login";

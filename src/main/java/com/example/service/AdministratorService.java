@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdministratorService {
 
     @Autowired
-    private AdministratorRepository administratorRepositoryrepository;
+    private AdministratorRepository administratorRepository;
 
 
 }

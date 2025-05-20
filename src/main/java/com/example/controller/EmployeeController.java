@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -49,5 +50,24 @@ public class EmployeeController {
         Employee employee = employeeService.showDetail(Integer.parseInt(id));
         model.addAttribute("employee", employee);
         return "employee/detail";
+    }
+
+    /**
+     * 従業員の扶養人数を更新します.
+     *
+     * @param form リクエストパラメータ
+     * @return 従業員詳細画面までリダイレクト/扶養人数が空欄の場合は詳細画面へフォワード
+     */
+    @PostMapping("/update")
+    public String update(UpdateEmployeeForm form, Model model) {
+        Employee employee = employeeService.showDetail(Integer.parseInt(form.getId()));
+        if (form.getDependentsCount().isEmpty()) {
+            model.addAttribute("errorMsg", "扶養人数を入力してください");
+            model.addAttribute("employee", employee);
+            return "employee/detail";
+        }
+        employee.setDependentsCount(Integer.parseInt(form.getDependentsCount()));
+        employeeService.update(employee);
+        return "redirect:/employee/showList";
     }
 }

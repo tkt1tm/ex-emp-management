@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * 管理者登録画面を表示する処理を行うコントローラです.
+ * 管理者情報の操作を行うコントローラです.
  *
  * @author takuto.itami
  */

@@ -1,7 +1,7 @@
 package com.example.form;
 
 /**
- * ログイン時に使用するフォームです
+ * ログイン時に使用するフォームです.
  *
  * @author takuto.itami
  */

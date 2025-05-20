@@ -11,6 +11,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * employeesテーブルを操作するリポジトリ.
+ *
+ * @author takuto.itami
+ */
 @Repository
 public class EmployeeRepository {
 
@@ -54,7 +59,6 @@ public class EmployeeRepository {
      * 主キーから従業員情報を取得します.
      *
      * @return 渡された主キーを持つ従業員の情報
-     * @throws Exception データが見つからない場合に発生します
      */
     public Employee findById(Integer id) {
         String sql = "SELECT id, name, image, gender, hire_date, mail_address, zip_code, address, telephone, salary, characteristics, dependents_count FROM employees WHERE id = :id;";

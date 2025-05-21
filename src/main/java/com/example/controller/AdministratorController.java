@@ -9,6 +9,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,10 +77,14 @@ public class AdministratorController {
      * 管理者情報を登録します.
      *
      * @param form リクエストパラメータ
-     * @return ログイン画面にリダイレクトします
+     * @param result 入力時チェックのエラーメッセージ
+     * @return ログイン画面にリダイレクトします/ログイン失敗時はtoInsertメソッドにフォワード
      * */
     @PostMapping("/insert")
-    public String insert(InsertAdministratorForm form) {
+    public String insert(@Validated InsertAdministratorForm form, BindingResult result) {
+        if (result.hasErrors()) {
+            return toInsert(form);
+        }
         Administrator administrator = new Administrator();
         BeanUtils.copyProperties(form, administrator);
         administratorService.insert(administrator);

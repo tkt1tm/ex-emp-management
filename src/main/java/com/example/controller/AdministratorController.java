@@ -95,10 +95,13 @@ public class AdministratorController {
      * ログアウトをします.
      *
      * @param form ログイン画面へのリダイレクトに必要なフォーム
-     * @return ログイン画面にリダイレクトします
+     * @return ログイン画面にリダイレクトします/未ログインの場合は何もせずにログイン画面にリダイレクトします
      */
     @GetMapping("/logout")
     public String logout(LoginForm form) {
+        if (session.getAttribute("administratorName") == null) {
+            return "redirect:/";
+        }
         session.invalidate();
         return "redirect:/";
     }

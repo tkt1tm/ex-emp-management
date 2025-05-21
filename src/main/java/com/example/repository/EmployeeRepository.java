@@ -26,7 +26,7 @@ public class EmployeeRepository {
                 rs.getString("name"),
                 rs.getString("image"),
                 rs.getString("gender"),
-                rs.getDate("hire_date"),
+                rs.getDate("hire_date").toLocalDate(),
                 rs.getString("mail_address"),
                 rs.getString("zip_code"),
                 rs.getString("address"),

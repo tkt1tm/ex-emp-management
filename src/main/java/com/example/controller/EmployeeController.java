@@ -3,13 +3,17 @@ package com.example.controller;
 import com.example.domain.Employee;
 import com.example.form.UpdateEmployeeForm;
 import com.example.service.EmployeeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -41,14 +45,18 @@ public class EmployeeController {
      * 従業員の詳細画面を表示します.
      *
      * @param id リクエストパラメータで送られてくる従業員ID
-     * @param model 従業員情報を格納するためのリクエストパラメータ
      * @param form 扶養人数更新に使用するFormクラス
      * @return 従業員の詳細画面にフォワード
      */
     @GetMapping("/showDetail")
-    public String showDetail(String id, Model model, UpdateEmployeeForm form) {
-        Employee employee = employeeService.showDetail(Integer.parseInt(id));
-        model.addAttribute("employee", employee);
+    public String showDetail(String id, UpdateEmployeeForm form) {
+            Employee employee = employeeService.showDetail(Integer.parseInt(id));
+
+            BeanUtils.copyProperties(employee, form);
+            form.setHireDate(employee.getHireDate().toString());
+            form.setSalary(employee.getSalary().toString());
+            form.setDependentsCount(employee.getDependentsCount().toString());
+
         return "employee/detail";
     }
 
@@ -56,17 +64,21 @@ public class EmployeeController {
      * 従業員の扶養人数を更新します.
      *
      * @param form リクエストパラメータ
+     * @param result エラーメッセージを格納
      * @return 従業員詳細画面までリダイレクト/扶養人数が空欄の場合は詳細画面へフォワード
      */
     @PostMapping("/update")
-    public String update(UpdateEmployeeForm form, Model model) {
-        Employee employee = employeeService.showDetail(Integer.parseInt(form.getId()));
-        if (form.getDependentsCount().isEmpty()) {
-            model.addAttribute("errorMsg", "扶養人数を入力してください");
-            model.addAttribute("employee", employee);
+    public String update(@Validated UpdateEmployeeForm form, BindingResult result) {
+        if (result.hasErrors()) {
             return "employee/detail";
         }
+
+        Employee employee = employeeService.showDetail(Integer.parseInt(form.getId()));
+        BeanUtils.copyProperties(form, employee);
+        employee.setHireDate(LocalDate.parse(form.getHireDate()));
+        employee.setSalary(Integer.parseInt(form.getSalary()));
         employee.setDependentsCount(Integer.parseInt(form.getDependentsCount()));
+
         employeeService.update(employee);
         return "redirect:/employee/showList";
     }

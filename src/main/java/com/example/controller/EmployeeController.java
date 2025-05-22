@@ -44,9 +44,50 @@ public class EmployeeController {
             return "redirect:/";
         }
 
-        List<Employee> employees = employeeService.showList();
+        if (model.getAttribute("start") == null) {
+            model.addAttribute("start", 0);
+        }
+
+        List<Employee> employees = employeeService.showPartialList((Integer) model.getAttribute("start"));
+
+        int employeeCount = employees.size();
+
+        if (employeeCount > 10) {
+            employees.remove(employeeCount - 1);
+            model.addAttribute("hasNextPage", true);
+        } else {
+            model.addAttribute("hasNextPage", false);
+        }
+
         model.addAttribute("employeeList", employees);
+
         return "employee/list";
+    }
+
+    /**
+     * 次の10件の従業員一覧ページを表示させます.
+     *
+     * @param start 何件目から10件分取り出すかを受け取ります
+     * @param model リクエストパラメータを格納
+     * @return 従業員一覧表示メソッドを呼び出します
+     */
+    @GetMapping("/moveForwardList")
+    public String moveForwardList(Integer start, Model model) {
+        model.addAttribute("start", start + 10);
+        return showList(model);
+    }
+
+    /**
+     * 前の10件の従業員一覧ページを表示させます.
+     *
+     * @param start 何件目から10件分取り出すかを受け取ります
+     * @param model リクエストパラメータを格納
+     * @return 従業員一覧表示メソッドを呼び出します
+     */
+    @GetMapping("/moveBackwardList")
+    public String moveBackwardList(Integer start, Model model) {
+        model.addAttribute("start", start - 10);
+        return showList(model);
     }
 
     /**

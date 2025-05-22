@@ -30,6 +30,16 @@ public class EmployeeService {
     }
 
     /**
+     * 従業員情報を10件取得します.
+     *
+     * @param start 何件目から検索するかを指定
+     * @return 従業員の情報が11件入ったリスト
+     */
+    public List<Employee> showPartialList(Integer start) {
+        return employeeRepository.findPartially(start);
+    }
+
+    /**
      * 従業員の詳細情報を取得します.
      *
      * @param id 取得したい情報を持つ従業員のID

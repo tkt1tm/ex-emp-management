@@ -56,6 +56,21 @@ public class EmployeeRepository {
     }
 
     /**
+     * 従業員一覧情報を11件入社日降順で取得します.
+     *
+     * @return 従業員の一覧情報を11件刻みで(存在しない場合は0件の一覧)
+     */
+    public List<Employee> findPartially(Integer start) {
+        String sql = "SELECT id, name, image, gender, hire_date, mail_address, zip_code, address, telephone, salary, characteristics, dependents_count FROM employees ORDER BY hire_date DESC OFFSET :start LIMIT 11;";
+
+        SqlParameterSource param = new MapSqlParameterSource().addValue("start", start);
+
+        List<Employee> employees = template.query(sql, param, EMPLOYEE_ROW_MAPPER);
+
+        return employees;
+    }
+
+    /**
      * 主キーから従業員情報を取得します.
      *
      * @return 渡された主キーを持つ従業員の情報

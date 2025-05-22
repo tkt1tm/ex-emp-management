@@ -71,6 +71,18 @@
       </div>
     </div>
     <!-- end container -->
+    <div>
+      <span th:if="${start >= 10}"
+        ><a th:href="@{/employee/moveBackwardList(start=${start})}"
+          >前へ</a
+        ></span
+      >
+      <span th:if="${hasNextPage}"
+        ><a th:href="@{/employee/moveForwardList(start=${start})}"
+          >次へ</a
+        ></span
+      >
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script
